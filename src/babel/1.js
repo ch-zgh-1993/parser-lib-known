@@ -20,6 +20,6 @@ add()
 
 
 function subtract (a = 1, b = 1) {
-	s()
+	// s()
 	return a - b
 }

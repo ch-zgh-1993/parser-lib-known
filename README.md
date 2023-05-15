@@ -17,3 +17,8 @@
 ## 库
 
 - babel
+  - tool-packages
+    - parser: 将代码段，转换为 AST 语法树的node。 完成词法分析动作
+    - generate： 将 AST 语法书转化为 js 代码
+    - traverse: 操作语法树的内容，这里做代码转换等工作
+      - path 对象操作方法

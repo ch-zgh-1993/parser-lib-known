@@ -10,8 +10,8 @@
 
 // 分析函数是否被调用的插件
 
-export default function (babel) {
-	console.log(babel)
+export default function (babel, options) {
+	console.log(babel, arguments)
 
 	const {
 		types: t
@@ -25,17 +25,19 @@ export default function (babel) {
 			exit () {
 				console.log(funcUse)
 				for(let k in funcUse) {
-					funcUse[k] === 0 && (console.warn(`the function name ${k} is never use, please delete.`))
+					funcUse[k] === 0 && (console.error(`the function name ${k} is never use, please delete.`))
 				}
 			}
 		},
 		FunctionDeclaration (p) {
+			console.log(p, 'FunctionDeclaration')
 			funcUse[p.node.id.name] !== undefined ? 0 : funcUse[p.node.id.name] = 0
 		},
 		CallExpression (p) {
 			if (p.scope.hasBinding(p.node.callee.name)) {
 				funcUse[p.node.callee.name] !== undefined ? funcUse[p.node.callee.name]++ : funcUse[p.node.callee.name] = 1
 			} else {
+				console.log(p.node.callee.name)
 				throw p.buildCodeFrameError('the function name ${k} is not defined');
 			}
 		}

@@ -19,6 +19,7 @@
 const parser = require("@babel/parser")
 import code from 'raw-loader!./1.js'
 
+console.log(parser)
 const AST = parser.parse(code, {
 	sourceType: 'module',
   	plugins: [
@@ -27,7 +28,7 @@ const AST = parser.parse(code, {
   	]
 })
 
-console.log(AST)
+console.log(AST, code)
 
 
 // 从 AST 转化为源码
@@ -46,14 +47,34 @@ console.log(Code)
 // path: 
 
 const traverse = require('@babel/traverse').default
-
+let insert = false
 const visitor = {
 	enter (path) {
+		console.log(insert)
+		console.log(path)
+		console.log(path.node && path.node)
+		const aa = parser.parse("console.log('增加一行注释')", {
+			sourceType: 'module',
+				plugins: [
+					// enable jsx and flow syntax
+					"jsx"
+				]
+		})
+		// path.insertBefore(aa)
 		if (path.isIdentifier({ name: 'a' })) {
 	      	path.node.name = 'x'
-	    }
+	  }
+		if (path.node && path.node.type === 'BlockStatement' && !insert) {
+			console.log(aa, 'aaaa')
+			insert = true
+			// path.insertAfter(aa)
+		}
+	},
+	exit () {
+		console.log('end')
 	}
 }
+console.log(traverse)
 // 转换 AST 中的内容
 traverse(AST, visitor)
 

@@ -10,8 +10,8 @@
 // babel 测试。
 
 // 初步使用
-// import a from './babel/first-known'
+import a from './babel/first-known'
 
 // 函数是否被调用插件
 
-require('./babel/test-plugin')
+// require('./babel/test-plugin')
